@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Yuvraj's Secret</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Comic Sans MS', cursive, sans-serif;
+      background: #ffeb3b;
+      overflow: hidden;
+    }
+
+    /* Funny Loading Screen */
+    #loading {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #ffeb3b;
+      text-align: center;
+      padding: 20px;
+    }
+
+    .floating {
+      position: absolute;
+      font-size: 2.5em;
+      animation: float 4s linear infinite;
+      color: #000;
+    }
+
+    @keyframes float {
+      0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+      50% { opacity: 1; }
+      100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+    }
+
+    .loading-text {
+      font-size: 1.5em;
+      margin-top: 100px;
+      animation: blink 1s infinite;
+      z-index: 1;
+      color: black;
+    }
+
+    @keyframes blink {
+      0%, 100% {opacity: 1;}
+      50% {opacity: 0.3;}
+    }
+
+    /* Question Section */
+    #question-container {
+      display: none;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      padding: 20px;
+      width: 90%;
+      max-width: 400px;
+    }
+
+    #question {
+      font-size: 1.8em;
+      margin-bottom: 20px;
+      word-wrap: break-word;
+    }
+
+    button {
+      padding: 14px 24px;
+      font-size: 1.2em;
+      margin: 10px auto;
+      cursor: pointer;
+      background: black;
+      color: yellow;
+      border: none;
+      border-radius: 8px;
+      transition: 0.3s ease;
+      width: 100%;
+      max-width: 250px;
+      display: block;
+    }
+
+    button:hover {
+      background: yellow;
+      color: black;
+    }
+
+    /* YES Button Animation */
+    .wiggle {
+      animation: wiggle 0.4s ease-in-out;
+    }
+
+    @keyframes wiggle {
+      0% { transform: rotate(0deg); }
+      25% { transform: rotate(5deg); }
+      50% { transform: rotate(-5deg); }
+      75% { transform: rotate(5deg); }
+      100% { transform: rotate(0deg); }
+    }
+
+    /* NO Button Animation */
+    .flyaway {
+      animation: fly 0.5s ease forwards;
+    }
+
+    @keyframes fly {
+      to {
+        transform: translate(
+          calc(100vw * var(--x)),
+          calc(100vh * var(--y))
+        ) rotate(720deg);
+        opacity: 0;
+      }
+    }
+
+    /* Final Screen */
+    #final-screen {
+      display: none;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      padding: 20px;
+      width: 90%;
+      max-width: 400px;
+    }
+
+    #final-screen img {
+      width: 50%;
+      max-width: 200px;
+      border-radius: 50%;
+      border: 5px solid white;
+    }
+
+    #final-screen h1 {
+      font-size: 2em;
+      margin-top: 20px;
+      color: #000;
+    }
+
+    @media (max-width: 400px) {
+      .floating {
+        font-size: 1.8em;
+      }
+
+      .loading-text {
+        font-size: 1.2em;
+      }
+
+      #question {
+        font-size: 1.4em;
+      }
+
+      button {
+        font-size: 1em;
+        padding: 12px;
+      }
+
+      #final-screen h1 {
+        font-size: 1.5em;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Funny Loading Animation -->
+  <div id="loading">
+    <div class="floating" style="left: 20%;">😂</div>
+    <div class="floating" style="left: 40%;">💃</div>
+    <div class="floating" style="left: 60%;">🤡</div>
+    <div class="floating" style="left: 80%;">🌈</div>
+    <div class="loading-text">Analyzing Yuvraj's personality...</div>
+  </div>
+
+  <!-- Question Area -->
+  <div id="question-container">
+    <div id="question">Do you think Yuvraj gay? 🤔</div>
+    <button id="yesBtn">Yes</button>
+    <button id="noBtn">No</button>
+  </div>
+
+  <!-- Final Message -->
+  <div id="final-screen">
+    <img src="yuvraj.jpg" alt="Yuvraj" />
+    <h1>🌈 It’s official. Yuvraj has come out in style! 💅</h1>
+  </div>
+
+  <script>
+    // Show question after loading
+    setTimeout(() => {
+      document.getElementById('loading').style.display = 'none';
+      document.getElementById('question-container').style.display = 'block';
+    }, 4000);
+
+    const noBtn = document.getElementById("noBtn");
+    const yesBtn = document.getElementById("yesBtn");
+
+    // YES button wiggle then show final
+    yesBtn.addEventListener("click", () => {
+      yesBtn.classList.add("wiggle");
+      setTimeout(() => {
+        document.getElementById('question-container').style.display = 'none';
+        document.getElementById('final-screen').style.display = 'block';
+      }, 500);
+    });
+
+    // NO button flies away every time clicked
+    noBtn.addEventListener("click", () => {
+      const x = Math.random() * 2 - 1; // -1 to 1
+      const y = Math.random() * 2 - 1;
+      noBtn.style.setProperty('--x', x);
+      noBtn.style.setProperty('--y', y);
+      noBtn.classList.add("flyaway");
+
+      setTimeout(() => {
+        noBtn.classList.remove("flyaway");
+
+        // Random new position
+        const newX = Math.random() * (window.innerWidth - 150);
+        const newY = Math.random() * (window.innerHeight - 50);
+
+        noBtn.style.position = "absolute";
+        noBtn.style.left = `${newX}px`;
+        noBtn.style.top = `${newY}px`;
+      }, 500);
+    });
+  </script>
+
+</body>
+</html>
